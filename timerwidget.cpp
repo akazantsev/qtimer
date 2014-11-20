@@ -115,11 +115,13 @@ void TimerWidget::timerEvent(QTimerEvent *event)
 void TimerWidget::wheelEvent(QWheelEvent *event)
 {
     const int scrollUnit = 120;
-    bool min = QRect(mLabel->pos(), mSuffixLabel->pos() + mSuffixLabel->rect().bottomRight()).contains(event->pos());
-    bool sec = QRect(sLabel->pos(), sSuffixLabel->pos() + sSuffixLabel->rect().bottomRight()).contains(event->pos());
+    bool min = QRect(mLabel->pos(), mSuffixLabel->pos() +
+                     mSuffixLabel->rect().bottomRight()).contains(event->pos());
+    bool sec = QRect(sLabel->pos(), sSuffixLabel->pos() +
+                     sSuffixLabel->rect().bottomRight()).contains(event->pos());
     static int step = 0;
 
-    if (initDuration == duration && (min || sec))
+    if (!isRunning() && (min || sec))
     {
         step += event->angleDelta().y();
 
