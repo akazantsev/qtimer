@@ -134,7 +134,7 @@ void TimerWidget::wheelEvent(QWheelEvent *event)
                 inc *= 60;
             }
 
-            setDuration(inc + initDuration);
+            setDuration(inc + duration);
             step %= scrollUnit;
         }
     }
