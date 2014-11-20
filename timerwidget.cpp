@@ -37,7 +37,10 @@ bool TimerWidget::isRunning() const
 
 void TimerWidget::setDuration(int s)
 {
-    initDuration = (s < 0 ? 0 : s);
+    const int min = 0;
+    const int max = 60 * 60; // one hour
+    initDuration = (s < min ? min : (s > max ? max : s));
+
     reset();
 }
 
