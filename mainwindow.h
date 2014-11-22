@@ -12,6 +12,9 @@ class Notification;
 class QMediaPlayer;
 class QPropertyAnimation;
 
+class QStateMachine;
+class QState;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -23,8 +26,6 @@ public:
 private slots:
     void alarm();
     void deactivateAlarm();
-    void startStop();
-    void reset();
     void notifAction(const QString &actionId);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
@@ -37,8 +38,15 @@ private:
     QPropertyAnimation *animation;
     QSystemTrayIcon *trayIcon;
 
-    void start();
-    void stop();
+    // State machine
+    QStateMachine *stateMachine;
+    QState *normalState;
+    QState *pausedState;
+    QState *runningState;
+    QState *alarmState;
+
+    void createStateMachine();
+    void createConnections();
 };
 
 #endif // MAINWINDOW_H
