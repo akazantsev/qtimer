@@ -7,7 +7,7 @@ TimerWidget::TimerWidget(QWidget *parent) :
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    initDuration = 1 * 6;
+    m_duration = 1 * 6;
     alarmDuration = 60;
 
     mLabel = new QLabel;
@@ -35,11 +35,16 @@ bool TimerWidget::isRunning() const
     return uiTimer != 0;
 }
 
+int TimerWidget::duration() const
+{
+    return m_duration;
+}
+
 void TimerWidget::setDuration(int s)
 {
     const int min = 0;
     const int max = 60 * 60; // one hour
-    initDuration = (s < min ? min : (s > max ? max : s));
+    m_duration = (s < min ? min : (s > max ? max : s));
 
     reset();
 }
@@ -76,7 +81,7 @@ void TimerWidget::stop()
     if (!isRunning())
         return;
 
-    duration = left();
+    m_position = left();
     killTimer(uiTimer);
     uiTimer = 0;
 }
@@ -92,7 +97,7 @@ void TimerWidget::reset()
 {
     stop();
     deactivate();
-    duration = initDuration;
+    m_position = m_duration;
     updateTimer();
 }
 
@@ -137,7 +142,7 @@ void TimerWidget::wheelEvent(QWheelEvent *event)
                 inc *= 60;
             }
 
-            setDuration(inc + duration);
+            setDuration(inc + m_position);
             step %= scrollUnit;
         }
     }
@@ -150,7 +155,7 @@ void TimerWidget::wheelEvent(QWheelEvent *event)
 
 int TimerWidget::left() const
 {
-    int secsLeft = duration;
+    int secsLeft = m_position;
 
     if (isRunning())
         secsLeft -= startTime.elapsed() / 1000;

@@ -28,20 +28,8 @@ MainWindow::MainWindow(QWidget *parent) :
     trayIcon = new QSystemTrayIcon(appIcon, this);
     trayIcon->show();
 
-    timeoutNotif = new Notification(this);
-    timeoutNotif->setIcon(appIcon);
-    timeoutNotif->setText(tr("Timeout"));
-    timeoutNotif->setBodyText(tr("Time expired"));
-    timeoutNotif->setTimeout(5000);
-    timeoutNotif->addAction("deactivate", tr("Deactivate"));
-
-    animation = new QPropertyAnimation(ui->timerWidget, "color");
-    animation->setDuration(1500);
-    animation->setEasingCurve(QEasingCurve::OutInQuart);
-    animation->setKeyValueAt(0.0, ui->timerWidget->color());
-    animation->setKeyValueAt(0.5, QColor(200, 100, 100));
-    animation->setKeyValueAt(1.0, ui->timerWidget->color());
-
+    createAlarmAnimation();
+    createNotification();
     createStateMachine();
     createConnections();
 }
@@ -92,7 +80,37 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+void MainWindow::saveSettings()
+{
+
+}
+
+void MainWindow::restoreSettings()
+{
+
+}
+
 // Private
+
+void MainWindow::createAlarmAnimation()
+{
+    animation = new QPropertyAnimation(ui->timerWidget, "color");
+    animation->setDuration(1500);
+    animation->setEasingCurve(QEasingCurve::OutInQuart);
+    animation->setKeyValueAt(0.0, ui->timerWidget->color());
+    animation->setKeyValueAt(0.5, QColor(200, 100, 100));
+    animation->setKeyValueAt(1.0, ui->timerWidget->color());
+}
+
+void MainWindow::createNotification()
+{
+    timeoutNotif = new Notification(this);
+    timeoutNotif->setIcon(appIcon);
+    timeoutNotif->setText(tr("Timeout"));
+    timeoutNotif->setBodyText(tr("Time expired"));
+    timeoutNotif->setTimeout(5000);
+    timeoutNotif->addAction("deactivate", tr("Deactivate"));
+}
 
 void MainWindow::createStateMachine()
 {

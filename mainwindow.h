@@ -29,6 +29,9 @@ private slots:
     void notifAction(const QString &actionId);
     void trayIconActivated(QSystemTrayIcon::ActivationReason reason);
 
+    void saveSettings();
+    void restoreSettings();
+
 private:
     Ui::MainWindow *ui;
 
@@ -45,6 +48,8 @@ private:
     QState *runningState;
     QState *alarmState;
 
+    void createAlarmAnimation();
+    void createNotification();
     void createStateMachine();
     void createConnections();
 };

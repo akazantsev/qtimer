@@ -17,6 +17,7 @@ public:
     explicit TimerWidget(QWidget *parent = 0);
 
     bool isRunning() const;
+    int duration() const;
     void setDuration(int s);
     void setAlarmDuration(int s);
 
@@ -40,8 +41,8 @@ protected:
 private slots:
 
 private:
-    int duration;
-    int initDuration;
+    int m_position;
+    int m_duration;
     int alarmDuration;
 
     int alarmTimer;
