@@ -27,12 +27,29 @@ TimerWidget::TimerWidget(QWidget *parent) :
     layout->addStretch();
     setLayout(layout);
 
-    reset();
+    updateTimer();
 }
 
 bool TimerWidget::isRunning() const
 {
     return uiTimer != 0;
+}
+
+void TimerWidget::setAlarmDuration(int s)
+{
+    Q_ASSERT(s >= 0);
+
+    alarmDuration = s;
+}
+
+int TimerWidget::position() const
+{
+    return m_position;
+}
+
+void TimerWidget::setPosition(int p)
+{
+    m_position = p;
 }
 
 int TimerWidget::duration() const
@@ -47,13 +64,6 @@ void TimerWidget::setDuration(int s)
     m_duration = (s < min ? min : (s > max ? max : s));
 
     reset();
-}
-
-void TimerWidget::setAlarmDuration(int s)
-{
-    Q_ASSERT(s >= 0);
-
-    alarmDuration = s;
 }
 
 QColor TimerWidget::color() const

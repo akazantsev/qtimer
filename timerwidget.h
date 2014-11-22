@@ -17,9 +17,13 @@ public:
     explicit TimerWidget(QWidget *parent = 0);
 
     bool isRunning() const;
+    void setAlarmDuration(int s);
+
+    int position() const;
+    void setPosition(int p);
+
     int duration() const;
     void setDuration(int s);
-    void setAlarmDuration(int s);
 
     QColor color() const;
     void setColor(QColor c);
