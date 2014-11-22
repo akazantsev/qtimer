@@ -32,6 +32,10 @@ MainWindow::MainWindow(QWidget *parent) :
     createNotification();
     createStateMachine();
     createConnections();
+
+    restoreSettings();
+
+    stateMachine->start();
 }
 
 MainWindow::~MainWindow()
@@ -80,14 +84,43 @@ void MainWindow::trayIconActivated(QSystemTrayIcon::ActivationReason reason)
     }
 }
 
+const QString positionSetting = "position";
+const QString durationSetting = "duration";
+const QString geometrySetting = "geometry";
+
 void MainWindow::saveSettings()
 {
-
+    QSettings s;
+    s.setValue(durationSetting, ui->timerWidget->duration());
+    s.setValue(positionSetting, ui->timerWidget->position());
+    s.setValue(geometrySetting, saveGeometry());
 }
 
 void MainWindow::restoreSettings()
 {
+    QSettings s;
+    QVariant positionVariant = s.value(positionSetting);
+    int position = positionVariant.toInt();
+    int duration = s.value(durationSetting, 60).toInt();
 
+    ui->timerWidget->setDuration(duration);
+
+    if (positionVariant.isValid() && position != duration)
+    {
+        ui->timerWidget->setPosition(position);
+        stateMachine->setInitialState(pausedState);
+    } else {
+        stateMachine->setInitialState(normalState);
+    }
+
+    restoreGeometry(s.value(geometrySetting).toByteArray());
+}
+
+// Protected
+
+void MainWindow::closeEvent(QCloseEvent *)
+{
+    saveSettings();
 }
 
 // Private
@@ -162,8 +195,6 @@ void MainWindow::createStateMachine()
     stateMachine->addState(pausedState);
     stateMachine->addState(runningState);
     stateMachine->addState(alarmState);
-    stateMachine->setInitialState(normalState);
-    stateMachine->start();
 }
 
 void MainWindow::createConnections()

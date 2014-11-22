@@ -44,12 +44,21 @@ void TimerWidget::setAlarmDuration(int s)
 
 int TimerWidget::position() const
 {
-    return m_position;
+    int secsLeft = m_position;
+
+    if (isRunning())
+        secsLeft -= startTime.elapsed() / 1000;
+
+    if (secsLeft < 0)
+        return 0;
+
+    return secsLeft;
 }
 
 void TimerWidget::setPosition(int p)
 {
-    m_position = p;
+    m_position = qBound(0, p, duration());
+    updateTimer();
 }
 
 int TimerWidget::duration() const
@@ -59,10 +68,7 @@ int TimerWidget::duration() const
 
 void TimerWidget::setDuration(int s)
 {
-    const int min = 0;
-    const int max = 60 * 60; // one hour
-    m_duration = (s < min ? min : (s > max ? max : s));
-
+    m_duration = qBound(0, s, 60 * 60);
     reset();
 }
 
@@ -91,7 +97,7 @@ void TimerWidget::stop()
     if (!isRunning())
         return;
 
-    m_position = left();
+    m_position = position();
     killTimer(uiTimer);
     uiTimer = 0;
 }
@@ -117,7 +123,7 @@ void TimerWidget::timerEvent(QTimerEvent *event)
 {
     if (event->timerId() == uiTimer)
     {
-        if (left() <= 0)
+        if (position() <= 0)
         {
             emit timeout();
             alarmTimer = startTimer(alarmDuration * 1000);
@@ -163,22 +169,9 @@ void TimerWidget::wheelEvent(QWheelEvent *event)
 
 // Private
 
-int TimerWidget::left() const
-{
-    int secsLeft = m_position;
-
-    if (isRunning())
-        secsLeft -= startTime.elapsed() / 1000;
-
-    if (secsLeft < 0)
-        return 0;
-
-    return secsLeft;
-}
-
 void TimerWidget::updateTimer()
 {
-    const int secs = left();
+    const int secs = position();
 
     mLabel->setText(fmtTime(secs / 60));
     sLabel->setText(fmtTime(secs % 60));

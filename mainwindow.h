@@ -32,6 +32,9 @@ private slots:
     void saveSettings();
     void restoreSettings();
 
+protected:
+    void closeEvent(QCloseEvent *);
+
 private:
     Ui::MainWindow *ui;
 

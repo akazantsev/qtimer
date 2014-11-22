@@ -59,7 +59,6 @@ private:
     QLabel *sLabel;
     QLabel *sSuffixLabel;
 
-    int left() const;
     void updateTimer();
     QString fmtTime(int s) const;
 };
