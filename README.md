@@ -1,0 +1,4 @@
+qtimer
+======
+
+Simple kitchen timer
