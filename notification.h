@@ -26,7 +26,7 @@ signals:
     void actionInvoked(const QString &id);
 
 private slots:
-    void actionHandler(uint id, const QString &action);
+    void actionHandler(uint, const QString &action);
 
 private:
     int m_timeout;

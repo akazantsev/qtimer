@@ -33,7 +33,7 @@ private slots:
     void restoreSettings();
 
 protected:
-    void closeEvent(QCloseEvent *);
+    void closeEvent(QCloseEvent *event);
 
 private:
     Ui::MainWindow *ui;

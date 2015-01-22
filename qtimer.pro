@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui dbus multimedia
+QT       += core gui multimedia
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -12,18 +12,24 @@ TARGET = qtimer
 TEMPLATE = app
 CONFIG += c++11
 
-DBUS_INTERFACES += org.freedesktop.Notifications.xml
-
-SOURCES += main.cpp\
+SOURCES += main.cpp \
         mainwindow.cpp \
-    dbusimage.cpp \
-    notification.cpp \
     timerwidget.cpp
 
 HEADERS  += mainwindow.h \
-    dbusimage.h \
-    notification.h \
     timerwidget.h
+
+linux-g++ {
+    QT += dbus
+
+    DBUS_INTERFACES += org.freedesktop.Notifications.xml
+
+    SOURCES += dbusimage.cpp \
+        notification.cpp
+
+    HEADERS += dbusimage.h \
+        notification.h
+}
 
 FORMS    += mainwindow.ui
 

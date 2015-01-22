@@ -1,10 +1,14 @@
 #include <QtWidgets>
 #include <QMediaPlayer>
 #include <QMediaPlaylist>
+#include <QtGlobal>
 
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "notification.h"
+
+#ifdef Q_WS_X11
+# include "notification.h"
+#endif
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
@@ -19,14 +23,13 @@ MainWindow::MainWindow(QWidget *parent) :
 
     QMediaPlaylist *playlist = new QMediaPlaylist(this);
     playlist->setPlaybackMode(QMediaPlaylist::Loop);
-    playlist->addMedia(QUrl::fromLocalFile(QDir::currentPath() +
-                                           "/../qtimer/sounds/alarm.ogg"));
+    playlist->addMedia(QUrl("qrc:/sounds/alarm.ogg"));
 
     mediaPlayer = new QMediaPlayer(this);
     mediaPlayer->setPlaylist(playlist);
 
     trayIcon = new QSystemTrayIcon(appIcon, this);
-    trayIcon->show();
+    trayIcon->setVisible(true);
 
     createAlarmAnimation();
     createNotification();
@@ -50,7 +53,10 @@ void MainWindow::alarm()
     animation->setLoopCount(-1);
     animation->start();
     mediaPlayer->play();
+
+#ifdef Q_WS_X11
     timeoutNotif->show();
+#endif
 }
 
 void MainWindow::deactivateAlarm()
@@ -63,7 +69,7 @@ void MainWindow::notifAction(const QString &actionId)
 {
     if (actionId == "deactivate")
     {
-        ui->timerWidget->deactivate();
+        deactivateAlarm();
     }
 }
 
@@ -118,9 +124,11 @@ void MainWindow::restoreSettings()
 
 // Protected
 
-void MainWindow::closeEvent(QCloseEvent *)
+void MainWindow::closeEvent(QCloseEvent *event)
 {
     saveSettings();
+    trayIcon->setVisible(false);
+    event->accept();
 }
 
 // Private
@@ -137,12 +145,14 @@ void MainWindow::createAlarmAnimation()
 
 void MainWindow::createNotification()
 {
+#ifdef Q_WS_X11
     timeoutNotif = new Notification(this);
     timeoutNotif->setIcon(appIcon);
     timeoutNotif->setText(tr("Timeout"));
     timeoutNotif->setBodyText(tr("Time expired"));
     timeoutNotif->setTimeout(5000);
     timeoutNotif->addAction("deactivate", tr("Deactivate"));
+#endif
 }
 
 void MainWindow::createStateMachine()
@@ -199,8 +209,10 @@ void MainWindow::createStateMachine()
 
 void MainWindow::createConnections()
 {
+#ifdef Q_WS_X11
     connect(timeoutNotif, SIGNAL(actionInvoked(const QString &)),
             this, SLOT(notifAction(const QString &)));
+#endif
     connect(trayIcon, SIGNAL(activated(QSystemTrayIcon::ActivationReason)),
             this, SLOT(trayIconActivated(QSystemTrayIcon::ActivationReason)));
 
