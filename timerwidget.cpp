@@ -7,7 +7,6 @@ TimerWidget::TimerWidget(QWidget *parent) :
 {
     setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
 
-    m_duration = 1 * 6;
     alarmDuration = 60;
 
     mLabel = new QLabel;
@@ -27,7 +26,7 @@ TimerWidget::TimerWidget(QWidget *parent) :
     layout->addStretch();
     setLayout(layout);
 
-    updateTimer();
+    setDuration(1 * 6);
 }
 
 bool TimerWidget::isRunning() const
