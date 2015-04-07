@@ -55,6 +55,11 @@ private:
     void createNotification();
     void createStateMachine();
     void createConnections();
+    void setupStartButton(QState* state, bool enabled = true);
+    void setupPauseButton(QState* state, bool enabled = true);
+    void setupButton(
+            QWidget* button, QState* state, const QString& label,
+            const QString& iconName, bool enabled = true);
 };
 
 #endif // MAINWINDOW_H

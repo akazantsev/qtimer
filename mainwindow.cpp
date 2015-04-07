@@ -54,6 +54,9 @@ void MainWindow::alarm()
     animation->start();
     mediaPlayer->play();
 
+    activateWindow();
+    raise();
+
 #ifdef Q_WS_X11
     timeoutNotif->show();
 #endif
@@ -157,37 +160,25 @@ void MainWindow::createNotification()
 
 void MainWindow::createStateMachine()
 {
-    stateMachine = new QStateMachine;
-
     // Normal state
     normalState = new QState;
-    normalState->assignProperty(ui->startStopButton, "enabled", true);
-
-    normalState->assignProperty(ui->resetButton, "enabled", false);
-    normalState->assignProperty(ui->resetButton, "icon",
-                                QIcon::fromTheme("media-playback-stop"));
-    normalState->assignProperty(ui->resetButton, "text", "&Reset");
+    setupStartButton(normalState);
+    setupButton(ui->resetButton, normalState, tr("&Reset"),
+                "media-playback-stop", false);
 
     // Paused state
     pausedState = new QState;
-    pausedState->assignProperty(ui->startStopButton, "text", "&Start");
-    pausedState->assignProperty(ui->startStopButton, "icon",
-                                QIcon::fromTheme("media-playback-start"));
+    setupStartButton(pausedState);
 
     // Running state
     runningState = new QState;
-    runningState->assignProperty(ui->startStopButton, "text", "&Pause");
-    runningState->assignProperty(ui->startStopButton, "icon",
-                                 QIcon::fromTheme("media-playback-pause"));
+    setupPauseButton(runningState);
 
     runningState->assignProperty(ui->resetButton, "enabled", true);
 
     // Alarm state
     alarmState = new QState;
-    alarmState->assignProperty(ui->startStopButton, "enabled", false);
-    alarmState->assignProperty(ui->startStopButton, "text", "&Start");
-    alarmState->assignProperty(ui->startStopButton, "icon",
-                                QIcon::fromTheme("media-playback-start"));
+    setupStartButton(alarmState, false);
 
     // ToDo: Change icon as well
     alarmState->assignProperty(ui->resetButton, "text", "&Disarm");
@@ -201,6 +192,7 @@ void MainWindow::createStateMachine()
     runningState->addTransition(ui->timerWidget, SIGNAL(timeout()), alarmState);
     alarmState->addTransition(ui->resetButton, SIGNAL(clicked()), normalState);
 
+    stateMachine = new QStateMachine;
     stateMachine->addState(normalState);
     stateMachine->addState(pausedState);
     stateMachine->addState(runningState);
@@ -222,5 +214,26 @@ void MainWindow::createConnections()
     connect(pausedState, SIGNAL(entered()), ui->timerWidget, SLOT(stop()));
     connect(alarmState, SIGNAL(entered()), this, SLOT(alarm()));
     connect(alarmState, SIGNAL(exited()), this, SLOT(deactivateAlarm()));
+}
+
+void MainWindow::setupStartButton(QState *state, bool enabled)
+{
+    setupButton(ui->startStopButton, state, tr("&Start"),
+                "media-playback-start", enabled);
+}
+
+void MainWindow::setupPauseButton(QState *state, bool enabled)
+{
+    setupButton(ui->startStopButton, state, tr("&Pause"),
+                "media-playback-pause", enabled);
+}
+
+void MainWindow::setupButton(
+        QWidget* button, QState* state, const QString& label,
+        const QString& iconName, bool enabled)
+{
+    state->assignProperty(button, "text", label);
+    state->assignProperty(button, "icon", QIcon::fromTheme(iconName));
+    state->assignProperty(button, "enabled", enabled);
 }
 
