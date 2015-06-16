@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include <QApplication>
+#include <QQmlApplicationEngine>
 
 int main(int argc, char *argv[])
 {
@@ -12,6 +13,8 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+
+    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
 
     return a.exec();
 }

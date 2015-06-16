@@ -6,11 +6,11 @@
 
 QT       += core gui multimedia
 
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
 
 TARGET = qtimer
 TEMPLATE = app
-CONFIG += c++11
+CONFIG += c++14
 
 SOURCES += main.cpp \
         mainwindow.cpp \
@@ -34,4 +34,5 @@ linux-g++ {
 FORMS    += mainwindow.ui
 
 RESOURCES += \
-    resources.qrc
+    resources.qrc \
+    qml.qrc
