@@ -11,8 +11,8 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("Andrey Kazantsev");
     QApplication::setOrganizationDomain("akazantsev.pp.ua");
 
-    MainWindow w;
-    w.show();
+    //MainWindow w;
+//    w.show();
 
     QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
 
