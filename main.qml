@@ -1,22 +1,16 @@
-import QtQuick 2.4
-import QtQuick.Controls 1.2
+import QtQuick 2.3
+import QtQuick.Controls 1.3
 
 ApplicationWindow {
     id: root
-    width: 300
-    height: width
+
+    title: "QTimer"
     visible: true
-    title: "QML Window"
+    minimumWidth: content.implicitWidth
+    minimumHeight: content.implicitHeight
 
-    CircularProgress {
+    MainLayout {
+        id: content
         anchors.fill: parent
-        anchors.margins: 20
-
-        progressMarker: Rectangle {
-            width: 20
-            height: 20
-            radius: face.radius * 5
-            color: "steelblue"
-        }
     }
 }

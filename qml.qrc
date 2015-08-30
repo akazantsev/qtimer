@@ -2,5 +2,9 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>CircularProgress.qml</file>
+        <file>TimeUnit.qml</file>
+        <file>TimeLabel.qml</file>
+        <file>MainLayout.qml</file>
+        <file>ControlButtons.qml</file>
     </qresource>
 </RCC>

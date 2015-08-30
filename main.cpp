@@ -1,20 +1,27 @@
-#include "mainwindow.h"
-#include <QApplication>
-#include <QQmlApplicationEngine>
+#include "CountdownTimer.h"
+
+#include <QtQml>
+#include <QtWidgets>
 
 int main(int argc, char *argv[])
 {
-    QApplication a(argc, argv);
+    QApplication app(argc, argv);
 
     QApplication::setApplicationName("qTimer");
     QApplication::setApplicationVersion("1.0");
     QApplication::setOrganizationName("Andrey Kazantsev");
     QApplication::setOrganizationDomain("akazantsev.pp.ua");
 
-    //MainWindow w;
-//    w.show();
+    qmlRegisterType<CountdownTimer>("org.akazantsev", 1, 0, "CountdownTimer");
 
-    QQmlApplicationEngine engine(QUrl("qrc:/main.qml"));
+    QQmlEngine *engine = new QQmlEngine;
+    QQmlComponent component(engine, QUrl("qrc:/main.qml"));
 
-    return a.exec();
+    auto window = qobject_cast<QWindow*>(component.create());
+    if (window)
+        window->setIcon(QIcon(":/icons/app.png"));
+
+    qDebug() << component.errors();
+
+    return app.exec();
 }

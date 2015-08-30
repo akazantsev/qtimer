@@ -10,14 +10,16 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets qml quick
 
 TARGET = qtimer
 TEMPLATE = app
-CONFIG += c++14
+CONFIG += c++14 qml_debug
 
 SOURCES += main.cpp \
         mainwindow.cpp \
-    timerwidget.cpp
+    timerwidget.cpp \
+    CountdownTimer.cpp
 
 HEADERS  += mainwindow.h \
-    timerwidget.h
+    timerwidget.h \
+    CountdownTimer.h
 
 linux-g++ {
     QT += dbus
@@ -31,7 +33,7 @@ linux-g++ {
         notification.h
 }
 
-FORMS    += mainwindow.ui
+FORMS    +=
 
 RESOURCES += \
     resources.qrc \

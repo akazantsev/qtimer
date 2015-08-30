@@ -3,27 +3,62 @@ import QtQuick 2.4
 Item {
     id: root
 
+    property int min: 0
+    property int max: 100
+    property int value: 0
+    property int circleWidth: 8
     property Component progressMarker
 
     Rectangle {
         id: face
 
-        width: Math.min(parent.width, parent.height) - marker.width
-        height: width
+        property int size: Math.min(parent.width, parent.height) -
+                           (marker.width - border.width)
+        width: size
+        height: size
 
         anchors.centerIn: parent
-        radius: width / 2
+        radius: size / 2
         color: "transparent"
-        border.width: 8
-        border.color: "skyblue"
+        border.width: circleWidth
+        border.color: "steelblue"
+
+        Rectangle {
+            anchors.fill: parent
+            color: "transparent"
+            border.width: 1
+            border.color: "red"
+        }
+
+        Loader {
+            id: marker
+            x: (face.size - marker.width) / 2
+            y: (circleWidth - marker.width) / 2;
+            transform: Rotation {
+                origin.x: marker.width / 2
+                origin.y: (face.size + marker.width) / 2
+                angle: 360 * (value - min) / max
+            }
+
+            sourceComponent: progressMarker
+        }
     }
 
-    Loader {
-        id: marker
+    Rectangle {
+        anchors.fill: parent
+        color: "transparent"
+        border.width: 1
+        border.color: "green"
+    }
 
-        sourceComponent: progressMarker
-        y: face.y - width / 2 + face.border.width / 2
-        anchors.horizontalCenter: face.horizontalCenter
+    Rectangle {
+        width: 2
+        anchors.top: parent.top
+        anchors.bottom: parent.bottom
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: "transparent"
+        border.width: 1
+        border.color: "blue"
     }
 }
 
