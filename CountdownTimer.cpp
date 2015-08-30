@@ -1,22 +1,22 @@
 #include "CountdownTimer.h"
 
 CountdownTimer::CountdownTimer(QObject *parent) :
-    QObject(parent)
+    QObject(parent), m_duration(0)
 {
 
 }
 
-int CountdownTimer::time() const
+int CountdownTimer::duration() const
 {
-    return m_time;
+    return m_duration;
 }
 
-void CountdownTimer::setTime(int newTime)
+void CountdownTimer::setDuration(int newDuration)
 {
-    if (newTime != m_time)
+    if (newDuration != m_duration)
     {
-        m_time = newTime;
-        emit timeChanged(newTime);
+        m_duration = newDuration;
+        emit durationChanged(newDuration);
     }
 }
 

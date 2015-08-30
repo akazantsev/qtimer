@@ -84,7 +84,7 @@ Item {
 
     CountdownTimer {
         id: countdownTimer
-        time: 20
+        duration: 20
     }
 }
 
