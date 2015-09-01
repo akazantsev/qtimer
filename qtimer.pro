@@ -13,12 +13,9 @@ TEMPLATE = app
 CONFIG += c++14 qml_debug
 
 SOURCES += main.cpp \
-        mainwindow.cpp \
-    timerwidget.cpp \
     CountdownTimer.cpp
 
-HEADERS  += mainwindow.h \
-    timerwidget.h \
+HEADERS  += \
     CountdownTimer.h
 
 linux-g++ {

@@ -78,6 +78,7 @@ Item {
             id: alarmState
 
             onEntered: {
+                alarmSound.loops = 3;
                 alarmSound.play();
                 controlButtons.state = "alarm";
             }
@@ -112,7 +113,7 @@ Item {
     MediaPlayer {
         id: alarmSound
 
-        loops: MediaPlayer.Infinite
+        loops: 10
         source: "qrc:///sounds/alarm.ogg"
     }
 
