@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QObject>
+#include <QTime>
 
 class CountdownTimer : public QObject
 {
@@ -23,8 +24,19 @@ public:
 signals:
     void durationChanged(int newDuration);
     void timeLeftChanged(int newTimeLeft);
+    void timeOut();
+
+protected:
+    void timerEvent(QTimerEvent *);
 
 private:
     int m_duration;
+    int m_timeLeft;
+    int m_timerId;
+    QTime m_startTime;
+
+    bool isRunning() const;
+    void setTimeLeft(int newTimeLeft);
+    void stopTimer();
 };
 

@@ -21,6 +21,11 @@ Item {
         State {
             id: normalState
 
+            onEntered: {
+                countdownTimer.reset();
+                controlButtons.state = "normal";
+            }
+
             SignalTransition {
                 targetState: runningState
                 signal: controlButtons.actionClicked
@@ -35,22 +40,51 @@ Item {
             }
 
             SignalTransition {
+                targetState: normalState
+                signal: controlButtons.resetClicked
+            }
+
+            SignalTransition {
+                targetState: pausedState
+                signal: controlButtons.actionClicked
+            }
+
+            SignalTransition {
                 targetState: alarmState
-                signal: root.alarm
+                signal: countdownTimer.timeOut
             }
         }
 
         State {
             id: pausedState
+
+            onEntered: {
+                countdownTimer.pause();
+                controlButtons.state = "paused";
+            }
+
+            SignalTransition {
+                targetState: runningState
+                signal: controlButtons.actionClicked
+            }
+
+            SignalTransition {
+                targetState: normalState
+                signal: controlButtons.resetClicked
+            }
         }
 
         State {
             id: alarmState
 
             onEntered: {
-                countdownTimer.pause();
                 alarmSound.play();
                 controlButtons.state = "alarm";
+            }
+
+            SignalTransition {
+                targetState: normalState
+                signal: controlButtons.actionClicked
             }
         }
     }
@@ -65,7 +99,7 @@ Item {
 
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignCenter
-            time: countdownTimer.timeLeft
+            time: countdownTimer.timeLeft / 1000
         }
 
         ControlButtons {

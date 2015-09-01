@@ -26,8 +26,8 @@ Item {
         },
         State {
             name: "alarm"
-            PropertyChanges { target: actionButton; enabled: false   }
-            PropertyChanges { target: resetButton;  state:  "disarm" }
+            PropertyChanges { target: actionButton; state:  "disarm" }
+            PropertyChanges { target: resetButton;  enabled: false   }
         }
     ]
 
@@ -57,6 +57,13 @@ Item {
                         text: "&Pause"
                         iconName: "media-playback-pause"
                     }
+                },
+                State {
+                    name: "disarm"
+                    PropertyChanges {
+                        target: actionButton
+                        text: "&Disarm"
+                    }
                 }
             ]
             onClicked: root.actionClicked()
@@ -66,24 +73,8 @@ Item {
             id: resetButton
 
             Layout.fillWidth: true
-            state: "reset"
-            states: [
-                State {
-                    name: "reset"
-                    PropertyChanges {
-                        target: resetButton
-                        text: "&Reset"
-                        iconName: "media-playback-stop"
-                    }
-                },
-                State {
-                    name: "disarm"
-                    PropertyChanges {
-                        target: resetButton
-                        text: "&Disarm"
-                    }
-                }
-            ]
+            text: "&Reset"
+            iconName: "media-playback-stop"
             onClicked: root.resetClicked()
         }
     }
