@@ -2,7 +2,7 @@ import QtQuick 2.3
 import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 import QtQml.StateMachine 1.0
-import QtMultimedia 5.4
+import QtMultimedia 5.5
 import org.akazantsev 1.0
 
 Item {
@@ -22,6 +22,7 @@ Item {
             id: normalState
 
             onEntered: {
+                alarmSound.stop();
                 countdownTimer.reset();
                 controlButtons.state = "normal";
             }
@@ -113,7 +114,7 @@ Item {
     MediaPlayer {
         id: alarmSound
 
-        loops: 10
+        loops: MediaPlayer.Infinite
         source: "qrc:///sounds/alarm.ogg"
     }
 

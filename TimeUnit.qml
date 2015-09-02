@@ -10,6 +10,7 @@ Item {
     property int value: 0
     property alias text: valueLabel.text
     property alias suffix: suffixLabel.text
+    property string fontFamily: "Monospace [DejaVu Sans Mono]"
 
     Label {
         id: valueLabel
@@ -20,7 +21,7 @@ Item {
 
         text: ("00" + Math.floor(value)).substr(-2, 2)
         font.pointSize: 42
-        font.family: "Monospaced"
+        font.family: fontFamily
     }
 
     Label {
@@ -33,6 +34,7 @@ Item {
 
         anchors.topMargin: 5
         font.pointSize: 18
+        font.family: fontFamily
     }
 }
 
