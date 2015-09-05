@@ -8,8 +8,6 @@ import org.akazantsev 1.0
 Item {
     id: root
 
-    signal alarm()
-
     implicitWidth: layout.implicitWidth
     implicitHeight: layout.implicitHeight
 
@@ -22,9 +20,13 @@ Item {
             id: normalState
 
             onEntered: {
-                alarmSound.stop();
                 countdownTimer.reset();
                 controlButtons.state = "normal";
+                timeLabel.editable = true;
+            }
+
+            onExited: {
+                timeLabel.editable = false;
             }
 
             SignalTransition {
@@ -84,6 +86,10 @@ Item {
                 controlButtons.state = "alarm";
             }
 
+            onExited: {
+                alarmSound.stop();
+            }
+
             SignalTransition {
                 targetState: normalState
                 signal: controlButtons.actionClicked
@@ -101,7 +107,11 @@ Item {
 
             Layout.fillHeight: true
             Layout.alignment: Qt.AlignCenter
-            time: countdownTimer.timeLeft / 1000
+
+            onTimeChanged: {
+                if (editable)
+                    countdownTimer.duration = time;
+            }
         }
 
         ControlButtons {
@@ -121,6 +131,14 @@ Item {
     CountdownTimer {
         id: countdownTimer
         duration: 20
+
+        // Can't be binded
+        onTimeLeftChanged: updateTime()
+        Component.onCompleted: updateTime()
+
+        function updateTime() {
+            timeLabel.time = timeLeft / 1000;
+        }
     }
 }
 
