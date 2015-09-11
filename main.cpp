@@ -17,9 +17,10 @@ int main(int argc, char *argv[])
     QQmlEngine *engine = new QQmlEngine;
     QQmlComponent component(engine, QUrl("qrc:/main.qml"));
 
+    QIcon appIcon = QIcon(":/icons/app.png");
     auto window = qobject_cast<QWindow*>(component.create());
     if (window)
-        window->setIcon(QIcon(":/icons/app.png"));
+        window->setIcon(appIcon);
 
     qDebug() << component.errors();
 

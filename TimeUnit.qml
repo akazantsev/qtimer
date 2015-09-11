@@ -4,7 +4,7 @@ import QtQuick.Controls 1.2
 Item {
     id: root
 
-    width: valueLabel.implicitWidth + suffixLabel.implicitWidth
+    width: valueLabel.implicitWidth + postfixLabel.implicitWidth
     height: valueLabel.implicitHeight
 
     signal timeSetting(int diff)
@@ -12,29 +12,22 @@ Item {
     property bool editable: false
     property int value: 0
     property alias text: valueLabel.text
-    property alias suffix: suffixLabel.text
-    property string fontFamily: "Monospace [DejaVu Sans Mono]"
+    property alias postfix: postfixLabel.text
+    property string fontFamily: "Droid Sans Mono"
 
     Label {
         id: valueLabel
 
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: parent.left
-
+        anchors.right: postfixLabel.left
         text: ("00" + Math.floor(value)).substr(-2, 2)
         font.pointSize: 42
         font.family: fontFamily
     }
 
     Label {
-        id: suffixLabel
+        id: postfixLabel
 
-        anchors.top: parent.top
-        anchors.bottom: parent.bottom
-        anchors.left: valueLabel.right
         anchors.right: parent.right
-
         anchors.topMargin: 5
         font.pointSize: 18
         font.family: fontFamily

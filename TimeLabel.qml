@@ -19,25 +19,25 @@ Item {
 
         TimeUnit {
             id: hourLabel
-            editable: root.editable
-            suffix: "H"
 
+            editable: root.editable
+            postfix: "H"
             onTimeSetting: time += diff * 60 * 60
         }
 
         TimeUnit {
             id: minuteLabel
-            editable: root.editable
-            suffix: "M"
 
+            editable: root.editable
+            postfix: "M"
             onTimeSetting: time += diff * 60
         }
 
         TimeUnit {
             id: secondLabel
-            editable: root.editable
-            suffix: "S"
 
+            editable: root.editable
+            postfix: "S"
             onTimeSetting: time += diff
         }
     }
@@ -46,7 +46,9 @@ Item {
         if (time < 0)
             time = 0;
 
-        hourLabel.value = time / (60 * 60);
+        var t = time;
+        hourLabel.value = t / (60 * 60);
+        t %= 60 * 60;
         minuteLabel.value = time / 60;
         secondLabel.value = time % 60;
     }
