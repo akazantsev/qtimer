@@ -49,8 +49,8 @@ Item {
         var t = time;
         hourLabel.value = t / (60 * 60);
         t %= 60 * 60;
-        minuteLabel.value = time / 60;
-        secondLabel.value = time % 60;
+        minuteLabel.value = t / 60;
+        secondLabel.value = t % 60;
     }
 }
 
