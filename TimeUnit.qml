@@ -1,11 +1,11 @@
-import QtQuick 2.3
+import QtQuick 2.5
 import QtQuick.Controls 1.2
 
 Item {
     id: root
 
-    width: valueLabel.implicitWidth + postfixLabel.implicitWidth
-    height: valueLabel.implicitHeight
+    width: (valueMetrics.width + 8) + postfixMetrics.width
+    height: valueMetrics.height
 
     signal timeSetting(int diff)
 
@@ -13,24 +13,42 @@ Item {
     property int value: 0
     property alias text: valueLabel.text
     property alias postfix: postfixLabel.text
-    property string fontFamily: "Droid Sans Mono"
+    property string fontFamily: "Sans"
 
     Label {
         id: valueLabel
 
+        anchors.top: parent.top
         anchors.right: postfixLabel.left
         text: ("00" + Math.floor(value)).substr(-2, 2)
         font.pointSize: 42
         font.family: fontFamily
+
+        TextMetrics {
+            id: valueMetrics
+
+            font.pointSize: valueLabel.font.pointSize
+            font.family: fontFamily
+            text: "00"
+        }
     }
 
     Label {
         id: postfixLabel
 
+        anchors.top: parent.top
         anchors.right: parent.right
         anchors.topMargin: 5
         font.pointSize: 18
         font.family: fontFamily
+
+        TextMetrics {
+            id: postfixMetrics
+
+            font.pointSize: postfixLabel.font.pointSize
+            font.family: fontFamily
+            text: postfixLabel.text
+        }
     }
 
     MouseArea {
