@@ -7,7 +7,8 @@ Notification::Notification(QObject *parent)
     : QObject(parent), m_timeout(0)
 {
     iface = new org::freedesktop::Notifications(
-                "org.freedesktop.Notifications", "/org/freedesktop/Notifications",
+                "org.freedesktop.Notifications",
+                "/org/freedesktop/Notifications",
                 QDBusConnection::sessionBus());
     connect(iface, SIGNAL(ActionInvoked(uint,QString)),
             this, SLOT(actionHandler(uint,QString)));

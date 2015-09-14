@@ -121,10 +121,10 @@ Item {
         }
     }
 
-    MediaPlayer {
+    Audio {
         id: alarmSound
 
-        loops: MediaPlayer.Infinite
+        loops: Audio.Infinite
         source: "qrc:///sounds/alarm.ogg"
     }
 
