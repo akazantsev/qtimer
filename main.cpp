@@ -1,7 +1,10 @@
-#include "CountdownTimer.h"
+#include <cstdio>
 
 #include <QtQml>
 #include <QtWidgets>
+
+#include "CircularProgress.h"
+#include "CountdownTimer.h"
 
 int main(int argc, char *argv[])
 {
@@ -13,6 +16,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationDomain("akazantsev.pp.ua");
 
     qmlRegisterType<CountdownTimer>("org.akazantsev", 1, 0, "CountdownTimer");
+    qmlRegisterType<CircularProgress>("org.akazantsev", 1, 0, "CircularProgress");
 
     QQmlEngine *engine = new QQmlEngine;
     QQmlComponent component(engine, QUrl("qrc:/main.qml"));
@@ -22,7 +26,15 @@ int main(int argc, char *argv[])
     if (window)
         window->setIcon(appIcon);
 
-    qDebug() << component.errors();
+    if(component.isError())
+    {
+        QTextStream out(stdout);
+
+        for (const auto &err : component.errors())
+        {
+            out << err.toString() << endl;
+        }
+    }
 
     return app.exec();
 }

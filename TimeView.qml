@@ -1,20 +1,32 @@
 import QtQuick 2.5
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import org.akazantsev 1.0
 
 Item {
     id: root
 
     property bool editable: false
     property int time: 0
+    property var model
 
-    width: layout.implicitWidth
-    height: layout.implicitHeight
+    width: circularProgress.size + 20
+    height: circularProgress.size + 20
+
+    CircularProgress {
+        id: circularProgress
+
+        property int size: Math.max(layout.implicitWidth, layout.implicitHeight) + 2 * penWidth + 20
+        anchors.centerIn: parent
+        width: size
+        height: size
+        value: (model.timeLeft / (model.duration * 1000.0)) * 360 * 16
+    }
 
     RowLayout {
         id: layout
 
-        anchors.fill: parent
+        anchors.centerIn: parent
         spacing: 10
 
         TimeUnit {

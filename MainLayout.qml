@@ -22,12 +22,11 @@ Item {
             onEntered: {
                 countdownTimer.reset();
                 controlButtons.state = "normal";
-                timeLabel.editable = true;
+                timeView.editable = true;
             }
 
-            onExited: {
-                timeLabel.editable = false;
-            }
+            onExited: timeView.editable = false
+
 
             SignalTransition {
                 targetState: runningState
@@ -86,9 +85,7 @@ Item {
                 controlButtons.state = "alarm";
             }
 
-            onExited: {
-                alarmSound.stop();
-            }
+            onExited: alarmSound.stop()
 
             SignalTransition {
                 targetState: normalState
@@ -102,11 +99,23 @@ Item {
 
         anchors.fill: parent
 
-        TimeLabel {
-            id: timeLabel
-
+        TimeView {
+            id: timeView
+            Layout.fillWidth: true
             Layout.fillHeight: true
-            Layout.alignment: Qt.AlignCenter
+
+            model: CountdownTimer {
+                id: countdownTimer
+                duration: 20
+
+                // Can't be binded
+                onTimeLeftChanged: updateTime()
+                Component.onCompleted: updateTime()
+
+                function updateTime() {
+                    timeView.time = timeLeft / 1000;
+                }
+            }
 
             onTimeChanged: {
                 if (editable)
@@ -126,19 +135,6 @@ Item {
 
         loops: Audio.Infinite
         source: "qrc:///sounds/alarm.ogg"
-    }
-
-    CountdownTimer {
-        id: countdownTimer
-        duration: 20
-
-        // Can't be binded
-        onTimeLeftChanged: updateTime()
-        Component.onCompleted: updateTime()
-
-        function updateTime() {
-            timeLabel.time = timeLeft / 1000;
-        }
     }
 }
 

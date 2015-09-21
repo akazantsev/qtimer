@@ -13,10 +13,12 @@ TEMPLATE = app
 CONFIG += c++14 qml_debug
 
 SOURCES += main.cpp \
-    CountdownTimer.cpp
+    CountdownTimer.cpp \
+    CircularProgress.cpp
 
 HEADERS  += \
-    CountdownTimer.h
+    CountdownTimer.h \
+    CircularProgress.h
 
 linux-g++ {
     QT += dbus
