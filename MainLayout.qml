@@ -3,7 +3,9 @@ import QtQuick.Controls 1.3
 import QtQuick.Layouts 1.1
 import QtQml.StateMachine 1.0
 import QtMultimedia 5.5
+
 import org.akazantsev 1.0
+import Qt.labs.settings 1.0
 
 Item {
     id: root
@@ -80,7 +82,6 @@ Item {
             id: alarmState
 
             onEntered: {
-                alarmSound.loops = 3;
                 alarmSound.play();
                 controlButtons.state = "alarm";
             }

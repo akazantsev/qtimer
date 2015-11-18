@@ -32,8 +32,6 @@ linux-g++ {
         notification.h
 }
 
-FORMS    +=
-
 RESOURCES += \
     resources.qrc \
     qml.qrc

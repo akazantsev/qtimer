@@ -47,6 +47,7 @@ void CircularProgress::setColor(QColor newColor)
     if (newColor != m_color)
     {
         m_color = newColor;
+        update();
         emit colorChanged(newColor);
     }
 }

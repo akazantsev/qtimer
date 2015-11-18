@@ -30,7 +30,7 @@ int CountdownTimer::timeLeft() const
 
 void CountdownTimer::start()
 {
-    m_timerId = startTimer(250);
+    m_timerId = startTimer(25);
     m_startTime = QTime::currentTime();
     m_startTime.start();
 }

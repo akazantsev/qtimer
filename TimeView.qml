@@ -21,6 +21,7 @@ Item {
         width: size
         height: size
         value: (model.timeLeft / (model.duration * 1000.0)) * 360 * 16
+        color: "steelblue"
     }
 
     RowLayout {
