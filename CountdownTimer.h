@@ -9,20 +9,26 @@ class CountdownTimer : public QObject
     Q_PROPERTY(int duration READ duration WRITE setDuration
                NOTIFY durationChanged)
     Q_PROPERTY(int timeLeft READ timeLeft NOTIFY timeLeftChanged)
+    Q_PROPERTY(bool running READ running WRITE setRunning NOTIFY runningChanged)
 
 public:
     explicit CountdownTimer(QObject *parent = 0);
 
     int duration() const;
     void setDuration(int newDuration);
+
+    bool running() const;
+    void setRunning(bool newRunning);
+
     int timeLeft() const;
 
     Q_INVOKABLE void start();
-    Q_INVOKABLE void pause();
+    Q_INVOKABLE void stop();
     Q_INVOKABLE void reset();
 
 signals:
     void durationChanged(int newDuration);
+    void runningChanged(bool newRunning);
     void timeLeftChanged(int newTimeLeft);
     void timeOut();
 
@@ -35,8 +41,6 @@ private:
     int m_timerId;
     QTime m_startTime;
 
-    bool isRunning() const;
     void setTimeLeft(int newTimeLeft);
-    void stopTimer();
 };
 

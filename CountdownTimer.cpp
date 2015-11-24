@@ -15,12 +15,12 @@ int CountdownTimer::duration() const
 
 void CountdownTimer::setDuration(int newDuration)
 {
-    if (m_duration != newDuration)
-    {
-        m_duration = newDuration;
-        setTimeLeft(m_duration * 1000); // converting to mSec
-        emit durationChanged(m_duration);
-    }
+    if (m_duration == newDuration)
+        return;
+
+    m_duration = newDuration;
+    setTimeLeft(m_duration * 1000); // converting to mSec
+    emit durationChanged(newDuration);
 }
 
 int CountdownTimer::timeLeft() const
@@ -28,21 +28,40 @@ int CountdownTimer::timeLeft() const
     return m_timeLeft;
 }
 
+bool CountdownTimer::running() const
+{
+    return m_timerId != 0;
+}
+
+void CountdownTimer::setRunning(bool newRunning)
+{
+    if (running() == newRunning)
+        return;
+
+    if (newRunning)
+        start();
+    else
+        stop();
+
+    emit runningChanged(newRunning);
+}
+
 void CountdownTimer::start()
 {
-    m_timerId = startTimer(25);
+    m_timerId = startTimer(10);
     m_startTime = QTime::currentTime();
     m_startTime.start();
 }
 
-void CountdownTimer::pause()
+void CountdownTimer::stop()
 {
-    stopTimer();
+    killTimer(m_timerId);
+    m_timerId = 0;
 }
 
 void CountdownTimer::reset()
 {
-    stopTimer();
+    stop();
     setTimeLeft(m_duration * 1000);
 }
 
@@ -53,29 +72,19 @@ void CountdownTimer::timerEvent(QTimerEvent *)
     if (newTimeLeft <= 0)
     {
         newTimeLeft = 0;
-        stopTimer();
+        stop();
         emit timeOut();
     }
 
     setTimeLeft(newTimeLeft);
 }
 
-bool CountdownTimer::isRunning() const
-{
-    return m_timerId != 0;
-}
-
 void CountdownTimer::setTimeLeft(int newTimeLeft)
 {
-    if (m_timeLeft != newTimeLeft)
-    {
-        m_timeLeft = newTimeLeft;
-        emit timeLeftChanged(m_timeLeft);
-    }
+    if (m_timeLeft == newTimeLeft)
+        return;
+
+    m_timeLeft = newTimeLeft;
+    emit timeLeftChanged(newTimeLeft);
 }
 
-void CountdownTimer::stopTimer()
-{
-    killTimer(m_timerId);
-    m_timerId = 0;
-}

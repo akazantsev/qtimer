@@ -5,28 +5,45 @@ import QtQuick.Layouts 1.1
 Item {
     id: root
 
-    signal actionClicked()
-    signal resetClicked()
-
     height: buttonLayout.implicitHeight
     state: "normal"
     states: [
         State {
             name: "normal"
+
+            PropertyChanges {
+                target: actionButton
+                text: "&Start"
+                iconName: "media-playback-start"
+            }
             PropertyChanges { target: resetButton; enabled: false    }
         },
         State {
             name: "paused"
-            PropertyChanges { target: actionButton; state:  "start"  }
+
+            PropertyChanges {
+                target: actionButton
+                text: "&Start"
+                iconName: "media-playback-start"
+            }
         },
         State {
             name: "running"
-            PropertyChanges { target: actionButton; state:  "pause"  }
+
+            PropertyChanges {
+                target: actionButton
+                text: "&Pause"
+                iconName: "media-playback-pause"
+            }
             PropertyChanges { target: resetButton;  enabled: true    }
         },
         State {
             name: "alarm"
-            PropertyChanges { target: actionButton; state:  "disarm" }
+
+            PropertyChanges {
+                target: actionButton
+                text: "&Disarm"
+            }
             PropertyChanges { target: resetButton;  enabled: false   }
         }
     ]
@@ -40,33 +57,7 @@ Item {
             id: actionButton
 
             Layout.fillWidth: true
-            state: "start"
-            states: [
-                State {
-                    name: "start"
-                    PropertyChanges {
-                        target: actionButton
-                        text: "&Start"
-                        iconName: "media-playback-start"
-                    }
-                },
-                State {
-                    name: "pause"
-                    PropertyChanges {
-                        target: actionButton
-                        text: "&Pause"
-                        iconName: "media-playback-pause"
-                    }
-                },
-                State {
-                    name: "disarm"
-                    PropertyChanges {
-                        target: actionButton
-                        text: "&Disarm"
-                    }
-                }
-            ]
-            onClicked: root.actionClicked()
+            onClicked: actionClicked()
         }
 
         Button {
@@ -75,8 +66,17 @@ Item {
             Layout.fillWidth: true
             text: "&Reset"
             iconName: "media-playback-stop"
-            onClicked: root.resetClicked()
+            onClicked: root.state = "normal"
         }
+    }
+
+    function actionClicked() {
+        if (state == "normal" || state == "paused")
+            state = "running";
+        else if (state == "running")
+            state = "paused";
+        else if (state == "alarm")
+            state = "normal";
     }
 }
 
