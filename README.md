@@ -3,4 +3,4 @@ qtimer
 
 Simple kitchen timer
 
-![Screenshot](http://i.imgur.com/LI9QwoI.png "Screenshot 1")
+![Screenshot](http://i.imgur.com/1yoBJ18.png "Screenshot 1")
