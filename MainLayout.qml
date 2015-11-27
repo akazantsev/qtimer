@@ -9,6 +9,8 @@ import Qt.labs.settings 1.0
 Item {
     id: root
 
+    property alias state: controlButtons.state
+
     implicitWidth: layout.implicitWidth
     implicitHeight: layout.implicitHeight
 
@@ -21,16 +23,16 @@ Item {
             id: timeView
             Layout.fillWidth: true
             Layout.fillHeight: true
-            editable: controlButtons.state == "normal"
+            editable: root.state == "normal"
 
             model: CountdownTimer {
                 id: countdownTimer
 
                 duration: 20
-                running: controlButtons.state == "running"
+                running: root.state == "running"
 
                 onTimeOut: {
-                    controlButtons.state = "alarm";
+                    root.state = "alarm";
                     alarmSound.play();
                 }
                 // Can't be binded
@@ -51,6 +53,7 @@ Item {
         ControlButtons {
             id: controlButtons
 
+
             Layout.fillWidth: true
 
             onStateChanged: {
@@ -61,6 +64,12 @@ Item {
                 }
             }
         }
+    }
+
+    Settings {
+        id: settings
+
+        property alias duration: countdownTimer.duration
     }
 
     Audio {

@@ -21,6 +21,7 @@ public:
     void setRunning(bool newRunning);
 
     int timeLeft() const;
+    void setTimeLeft(int newTimeLeft);
 
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
@@ -40,7 +41,5 @@ private:
     int m_timeLeft;
     int m_timerId;
     QTime m_startTime;
-
-    void setTimeLeft(int newTimeLeft);
 };
 

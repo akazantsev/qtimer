@@ -28,6 +28,15 @@ int CountdownTimer::timeLeft() const
     return m_timeLeft;
 }
 
+void CountdownTimer::setTimeLeft(int newTimeLeft)
+{
+    if (m_timeLeft == newTimeLeft)
+        return;
+
+    m_timeLeft = newTimeLeft;
+    emit timeLeftChanged(newTimeLeft);
+}
+
 bool CountdownTimer::running() const
 {
     return m_timerId != 0;
@@ -78,13 +87,3 @@ void CountdownTimer::timerEvent(QTimerEvent *)
 
     setTimeLeft(newTimeLeft);
 }
-
-void CountdownTimer::setTimeLeft(int newTimeLeft)
-{
-    if (m_timeLeft == newTimeLeft)
-        return;
-
-    m_timeLeft = newTimeLeft;
-    emit timeLeftChanged(newTimeLeft);
-}
-

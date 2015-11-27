@@ -9,22 +9,11 @@ Item {
     state: "normal"
     states: [
         State {
-            name: "normal"
-
-            PropertyChanges {
-                target: actionButton
-                text: "&Start"
-                iconName: "media-playback-start"
-            }
-            PropertyChanges { target: resetButton; enabled: false    }
-        },
-        State {
             name: "paused"
 
             PropertyChanges {
-                target: actionButton
-                text: "&Start"
-                iconName: "media-playback-start"
+                target: resetButton
+                enabled: true
             }
         },
         State {
@@ -35,7 +24,11 @@ Item {
                 text: "&Pause"
                 iconName: "media-playback-pause"
             }
-            PropertyChanges { target: resetButton;  enabled: true    }
+
+            PropertyChanges {
+                target: resetButton
+                enabled: true
+            }
         },
         State {
             name: "alarm"
@@ -44,7 +37,6 @@ Item {
                 target: actionButton
                 text: "&Disarm"
             }
-            PropertyChanges { target: resetButton;  enabled: false   }
         }
     ]
 
@@ -57,6 +49,9 @@ Item {
             id: actionButton
 
             Layout.fillWidth: true
+            text: "&Start"
+            iconName: "media-playback-start"
+
             onClicked: actionClicked()
         }
 
@@ -64,19 +59,23 @@ Item {
             id: resetButton
 
             Layout.fillWidth: true
+            enabled: false
             text: "&Reset"
             iconName: "media-playback-stop"
+
             onClicked: root.state = "normal"
         }
     }
 
     function actionClicked() {
-        if (state == "normal" || state == "paused")
-            state = "running";
-        else if (state == "running")
-            state = "paused";
-        else if (state == "alarm")
-            state = "normal";
+        var transitions = {
+            "normal":  "running",
+            "paused":  "running",
+            "running": "paused",
+            "alarm":   "normal"
+        };
+
+        state = transitions[state];
     }
 }
 
