@@ -14,22 +14,22 @@ CONFIG += c++14 qml_debug
 
 SOURCES += main.cpp \
     CountdownTimer.cpp \
-    CircularProgress.cpp
+    CircularProgress.cpp \
+    Notification.cpp
 
 HEADERS  += \
     CountdownTimer.h \
-    CircularProgress.h
+    CircularProgress.h \
+    Notification.h
 
 linux-g++ {
     QT += dbus
 
     DBUS_INTERFACES += org.freedesktop.Notifications.xml
 
-    SOURCES += dbusimage.cpp \
-        notification.cpp
+    SOURCES += dbusimage.cpp
 
-    HEADERS += dbusimage.h \
-        notification.h
+    HEADERS += dbusimage.h
 }
 
 RESOURCES += \

@@ -32,6 +32,7 @@ Item {
                 running: root.state == "running"
 
                 onTimeOut: {
+                    notif.show();
                     root.state = "alarm";
                     alarmSound.play();
                 }
@@ -64,6 +65,13 @@ Item {
                 }
             }
         }
+    }
+
+    Notification {
+        id: notif
+
+        text: "Alarm!"
+        bodyText: "Real alarm"
     }
 
     Settings {

@@ -5,6 +5,7 @@
 
 #include "CircularProgress.h"
 #include "CountdownTimer.h"
+#include "Notification.h"
 
 int main(int argc, char *argv[])
 {
@@ -15,8 +16,9 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName("Andrey Kazantsev");
     QApplication::setOrganizationDomain("akazantsev.pp.ua");
 
-    qmlRegisterType<CountdownTimer>("org.akazantsev", 1, 0, "CountdownTimer");
     qmlRegisterType<CircularProgress>("org.akazantsev", 1, 0, "CircularProgress");
+    qmlRegisterType<CountdownTimer>("org.akazantsev", 1, 0, "CountdownTimer");
+    qmlRegisterType<Notification>("org.akazantsev", 1, 0, "Notification");
 
     QQmlEngine *engine = new QQmlEngine;
     QQmlComponent component(engine, QUrl("qrc:/main.qml"));

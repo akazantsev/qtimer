@@ -1,6 +1,6 @@
 #include <QtWidgets>
 
-#include "notification.h"
+#include "Notification.h"
 #include "dbusimage.h"
 
 Notification::Notification(QObject *parent)
@@ -26,8 +26,8 @@ void Notification::actionHandler(uint, const QString &action)
 
 void Notification::show() const
 {
-    iface->Notify(qApp->applicationName(), 0, "", title, body, actions, hints,
-                  m_timeout);
+    iface->Notify(qApp->applicationName(), 0, "", m_text, m_bodyText,
+                  actions, hints, m_timeout);
 }
 
 void Notification::addAction(const QString &id, const QString &text)
@@ -48,22 +48,49 @@ void Notification::setIcon(const QIcon &icon)
     hints.insert("image_data", QVariant::fromValue(dbusImage));
 }
 
+int Notification::timeout() const
+{
+    return m_timeout;
+}
+
+void Notification::setTimeout(int timeout)
+{
+    if (m_timeout == timeout)
+        return;
+
+    m_timeout = timeout;
+    emit timeoutChanged(timeout);
+}
+
+QString Notification::text() const
+{
+    return m_text;
+}
+
 void Notification::setText(const QString &text)
 {
     Q_ASSERT(!text.isNull());
 
-    title = text;
+    if (m_text == text)
+        return;
+
+    m_text = text;
+    emit textChanged(text);
 }
 
-void Notification::setTimeout(int t)
+QString Notification::bodyText() const
 {
-    m_timeout = t;
+    return m_bodyText;
 }
 
-void Notification::setBodyText(const QString &text)
+void Notification::setBodyText(const QString &bodyText)
 {
-    Q_ASSERT(!text.isNull());
+    Q_ASSERT(!bodyText.isNull());
 
-    body = text;
+    if (m_bodyText == bodyText)
+        return;
+
+    m_bodyText = bodyText;
+    emit bodyTextChanged(bodyText);
 }
 
