@@ -1,6 +1,6 @@
-qtimer
+QTimer
 ======
 
-Simple kitchen timer
+Simple timer for use with pomodoro
 
-![Screenshot](http://i.imgur.com/1yoBJ18.png "Screenshot 1")
+![Screenshot](http://i.imgur.com/7ljgL3Z.png "Screenshot 1")
